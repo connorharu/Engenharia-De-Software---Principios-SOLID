@@ -34,6 +34,7 @@
   O Princípio da Responsabilidade Única define que uma classe deve ter apenas uma responsabilidade, e todos os seus métodos devem se referir a essa responsabilidade.
 
   ### Exemplo:
+```cpp
   class Turma() {
   private:
   //valores de Turma
@@ -53,7 +54,7 @@
         cout << "colocar aqui uma mensagem de erro" << endl;
         return -1;
     }
-
+```
   O método cancelaMatricula estar dentro da classe Turma não faz sentido. Isso fere o princípio da responsabilidade única, pois todos os métodos de Turma deveriam ser relacionados à turma, portanto, uma nova classe chamada Matricula poderia ser criada:
 
 ### Utilizando o princípio:
