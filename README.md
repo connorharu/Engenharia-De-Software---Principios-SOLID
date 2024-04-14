@@ -35,6 +35,7 @@
 
 <p>
   Para o primeiro princípio, escolhe-se o seguinte código para ilustrar o problema:
+  ```
   class Turma() {
   private:
   //valores de Turma
@@ -54,7 +55,7 @@
         cout << "colocar aqui uma mensagem de erro" << endl;
         return -1;
     }
-
+```
   O método cancelaMatricula estar dentro da classe Turma não faz sentido. Isso fere o princípio da responsabilidade única, pois todos os métodos de Turma deveriam ser relacionados à turma, portanto, uma nova classe chamada Matricula poderia ser criada:
 
 turma.h   :
