@@ -60,6 +60,7 @@
 ### Utilizando o princípio:
 
 #### turma.h   :
+```cpp
 #include <iostream>
 #include <string>
 #include <stdlib.h>
@@ -84,9 +85,9 @@ public:
     }
 
 };
-
+```
 #### aluno.h   :
-
+```cpp
 #include <stdlib.h>
 #include <iostream>
 #include <string>
@@ -121,9 +122,9 @@ class Aluno {
       cout << "(" << this->ra << ", " << this->nome << ")" << endl;
    }
 };
-
+```
 #### matricula.h   :
-
+```cpp
 #include <stdlib.h>
 #include <iostream>
 #include <string>
@@ -186,16 +187,18 @@ public:
     }
 
 };
-
+```
 ## Princípio de Demeter e Inversão de responsabilidade:
 ### O que são?
 
   Para ilustrar, escolhe-se o seguinte código:
+  ```java
     void sendMail(ContaBancaria conta, String msg) {
       Cliente cliente = conta.getCliente();
       String endereco = cliente.getMailAddress();
       "Envia mail"
-    }  
+    }
+ ```
 
   Esse código fere o princípio de Demeter, do encapsulamento, pois ele utiliza de Cliente, uma classe cujo objeto não foi passado como parâmetro; uma das métricas necessárias para o bom encapsulamento de um código.
   Ele também fere o princípio de inversão de responsabilidade: módulos de alto nível não podem depender de outros de baixo nível, e que ambos devem depender somente de abstrações. Ele fere esse princípio pois o método sendEmail depende diretamente da implementação da classe Cliente pra conseguir o endereço de e-mail, ao invés de depender de uma abstração.
@@ -203,6 +206,7 @@ public:
 ### Utilizando os princípios:
 
 #### cliente.h   :
+```cpp
 #include <iostream>
 #include <string>
 #include <stdlib.h>
@@ -243,9 +247,9 @@ private:
 
     //outros métodos aqui;
 };
-
+```
 #### conta.h   :
-
+```cpp
 #include <iostream>
 #include <string>
 #include <stdlib.h>
@@ -279,9 +283,9 @@ public:
     }
 
 };
-
+```
 #### email.h   :
-
+```cpp
 #include <iostream>
 #include <string>
 #include "cliente.h"
@@ -310,14 +314,14 @@ public:
         cout << "Mandando e-mail para: " << conta.getCliente() << "Com a seguinte mensagem:" << msg << endl;
     }
 };
-
+```
 ## Preferir Composição à Herança:
 ### O que é?
   Normalmente, dadas duas soluções de projeto onde uma baseia-se em herança e a outra em composição, a solução por meio de composição geralmente é melhor.
   Utilizaremos o seguinte código:
 
 #### heranca.h   :
-
+```cpp
 class Comida{
 private:
     string fruta;
@@ -346,9 +350,9 @@ Heranca() {
     setFruta();
 }
 };
-
+```
 #### composicao.h   :
-
+```cpp
 class Composicao {
 private:
     Comida fruta;
@@ -362,7 +366,7 @@ public:
     }  
 
 };
-
+```
 Dessa forma, nossa classe será composta somente dos métodos e atributos desejados, ao invés de herdar tudo que a classe Comida possui; por exemplo, nós não utilizamos de 'legume', 'grao' e 'proteina' na nossa classe Composicao por não julgarmos necessário, portanto ela não possui esses atributos, enquanto que a classe Heranca herdou todos esses atributos, mesmo eles sendo inúteis para o que desejamos fazer com a classe no momento.
 
 
