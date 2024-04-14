@@ -30,12 +30,12 @@
 - Single responsibility Principle;
 - Princípio de Demeter;
 - Inversão da dependência;
-- AAA
+- Prefira composição à Herança.
 </p>
 
 <p>
   Para o primeiro princípio, escolhe-se o seguinte código para ilustrar o problema:
-  ```
+
   class Turma() {
   private:
   //valores de Turma
@@ -55,7 +55,7 @@
         cout << "colocar aqui uma mensagem de erro" << endl;
         return -1;
     }
-```
+
   O método cancelaMatricula estar dentro da classe Turma não faz sentido. Isso fere o princípio da responsabilidade única, pois todos os métodos de Turma deveriam ser relacionados à turma, portanto, uma nova classe chamada Matricula poderia ser criada:
 
 turma.h   :
@@ -310,6 +310,59 @@ public:
     }
 };
 
+</p>
+
+<p>
+  O último princípio, preferir composição à herança, define que, normalmente, dadas duas soluções de projeto onde uma baseia-se em herança e a outra em composição, a solução por meio de composição geralmente é melhor. Utilizaremos o seguinte código:
+
+heranca.h   :
+
+class Comida{
+private:
+    string fruta;
+    string legume;
+    string grao;
+    string proteina;
+
+public:
+    Comida() {
+        this->fruta = fruta;
+        this->legume = legume;
+        this->grao = grao;
+        this->proteina = proteina;
+    }
+
+    //métodos setteres e getteres do restante dos atributos aqui;
+    string setFruta() {
+        this->fruta = fruta;
+    }
+
+};
+
+class Heranca : public Comida {
+public:
+Heranca() {
+    setFruta();
+}
+};
+
+composicao.h   :
+
+class Composicao {
+private:
+    Comida fruta;
+public:
+    Composicao(){
+        this->fruta = fruta;
+    }
+
+    void setFrutaComposicao(string nomeFruta) {
+        this->fruta = fruta;
+    }  
+
+};
+
+Dessa forma, nossa classe será composta somente dos métodos e atributos desejados, ao invés de herdar tudo que a classe Comida possui; por exemplo, nós não utilizamos de 'legume', 'grao' e 'proteina' na nossa classe Composicao por não julgarmos necessário, portanto ela não possui esses atributos, enquanto que a classe Heranca herdou todos esses atributos, mesmo eles sendo inúteis para o que desejamos fazer com a classe no momento.
 </p>
 </div>
 
