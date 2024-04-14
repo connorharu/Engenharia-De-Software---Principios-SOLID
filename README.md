@@ -26,7 +26,289 @@
 </p>
 
 <p>
-  
+  Os princípios escolhidos foram:
+- Single responsibility Principle;
+- Princípio de Demeter;
+- Inversão da dependência;
+- AAA
+</p>
+
+<p>
+  Para o primeiro princípio, escolhe-se o seguinte código para ilustrar o problema:
+  class Turma() {
+  private:
+  //valores de Turma
+  public:
+  //métodos de Turma
+    int cancelaMatricula(string ra){
+        for(int i = 0; i < qtde; i++) {
+            if(this->alunos[i]->getRa() == ra) {
+                delete this->alunos[i];
+                for(int j = i + 1; j < qtde; j++) {
+                    this->alunos[i] = alunos[j];
+                }
+                qtde--;
+            return true;
+            }
+        }
+        cout << "colocar aqui uma mensagem de erro" << endl;
+        return -1;
+    }
+
+  O método cancelaMatricula estar dentro da classe Turma não faz sentido. Isso fere o princípio da responsabilidade única, pois todos os métodos de Turma deveriam ser relacionados à turma, portanto, uma nova classe chamada Matricula poderia ser criada:
+
+turma.h   :
+#include <iostream>
+#include <string>
+#include <stdlib.h>
+using namespace std;
+
+class Turma {
+private:
+    string codTurma;
+    string semestre;
+
+public:
+    Turma(string semestre, int tamVetor){
+        this->semestre = semestre;
+        this->codTurma = "";
+    }
+
+    ~Turma() {
+    }
+
+    void mudarCodTurma(string codTurma) {
+        this->codTurma = codTurma;
+    }
+
+};
+
+aluno.h   :
+
+#include <stdlib.h>
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Aluno {
+  private:
+   string ra;
+   string nome;
+
+  public:
+   Aluno() {
+      this->ra = "0";
+      this->nome = "undefined";
+   }
+
+   Aluno(string _ra, string _nome) {
+      this->ra = _ra;
+      this->nome = _nome;
+   }
+
+   string getRa(){
+     return this->ra;
+   }
+
+   void setRa(string ra){
+     this->ra = ra;
+     }
+
+   void imprimir() {
+      cout << "(" << this->ra << ", " << this->nome << ")" << endl;
+   }
+};
+
+matricula.h   :
+
+#include <stdlib.h>
+#include <iostream>
+#include <string>
+#include "aluno.h";
+#include "turma.h";
+
+using namespace std;
+
+class Matricula{
+private:
+    int tamVetor;
+    int qtde;
+    Aluno** alunos;
+public:
+    Matricula() {
+        this->tamVetor = tamVetor;
+        this->qtde = 0;
+        this->alunos = new Aluno*[this->tamVetor];
+    }
+    bool matricula(Aluno* a) {
+        if(a == nullptr) {
+            cout << "esse aluno não existe" << endl;
+            return false;
+        }
+        if(qtde >= tamVetor) {
+            cout << "limite de alunos atingido" << endl;
+            return false;
+        }
+        this->alunos[this->qtde] = a;
+        qtde++;
+        return true;
+    }
+
+    int cancelaMatricula(string ra){
+        for(int i = 0; i < qtde; i++) {
+            if(this->alunos[i]->getRa() == ra) {
+                delete this->alunos[i];
+                for(int j = i + 1; j < qtde; j++) {
+                    this->alunos[i] = alunos[j];
+                qtde--;
+            return true;
+            }
+        }
+        cout << "colocar aqui uma mensagem de erro" << endl;
+        return -1;
+    }
+
+    void imprimeMatriculados() {
+        cout << "lista de alunos: " << endl;
+        for(int i = 0; i < qtde; i++) {
+            alunos[i]->imprimir();
+        }
+    }
+
+    ~Matricula() {
+        for (int i = 0; i < qtde; i++) {
+            delete alunos[i];
+        }
+        delete[] alunos;
+    }
+
+};
+
+</p>
+
+<p>
+  Para os princípios dois e três, escolhe-se o seguinte código para ilustrar o problema:
+    void sendMail(ContaBancaria conta, String msg) {
+      Cliente cliente = conta.getCliente();
+      String endereco = cliente.getMailAddress();
+      "Envia mail"
+    }  
+
+  Esse código fere o princípio de Demeter, do encapsulamento, pois ele utiliza de Cliente, uma classe cujo objeto não foi passado como parâmetro; uma das métricas necessárias para o bom encapsulamento de um código.
+  Ele também fere o princípio de inversão de responsabilidade: módulos de alto nível não podem depender de outros de baixo nível, e que ambos devem depender somente de abstrações. Ele fere esse princípio pois o método sendEmail depende diretamente da implementação da classe Cliente pra conseguir o endereço de e-mail, ao invés de depender de uma abstração.
+
+O código arrumado seria:
+
+cliente.h   :
+#include <iostream>
+#include <string>
+#include <stdlib.h>
+using namespace std;
+
+
+class Cliente {
+    //assumindo que a classe de cliente contém esses objetos:
+private:
+    string nome;
+    string cpf;
+    string endereco;
+    Cliente** cliente;
+    int tamVetor;
+    int posicao; //total ou a posição do momento
+
+    Cliente(string nome, string cpf, string endereco, int tamVetor) {
+        this->nome = nome;
+        this->cpf = cpf;
+        this->endereco = endereco;
+        this->cliente = new Cliente*[tamVetor];
+        int posicao = 0;
+    }
+    //informações de cliente aqui;
+
+    Cliente getCliente() {
+        for(int i = 0; i < posicao; i++) {
+            if(this->cliente[i].getPosicao() == posicao) {
+                return (*cliente[i]);
+            }
+        }
+    }
+
+    ~Cliente() {
+        //depois de deletar o objeto na heap com todas as informações de cliente dentro de um for:
+        delete [] cliente;
+    }
+
+    //outros métodos aqui;
+};
+
+conta.h   :
+
+#include <iostream>
+#include <string>
+#include <stdlib.h>
+#include "cliente.h"
+#include "email.h"
+using namespace std;
+
+class ContaBancaria {
+private:
+    ContaBancaria* contaBancaria;
+    string mailAddress;
+    ContaBancaria* cliente;
+
+public:
+    ContaBancaria(string mailAddress, ContaBancaria* contaBancaria) {
+        this->contaBancaria = contaBancaria;
+        this->mailAddress = contaBancaria->getMailAddress();
+    }
+
+    ContaBancaria* getContaBancaria() {
+        return contaBancaria;
+    }
+
+    ContaBancaria* setContaBancaria() {
+        this->contaBancaria = contaBancaria;
+    }
+
+    void sendEmail(ContaBancaria cliente, string mensagem) {
+        this->cliente = this->getCliente();
+        //"mandar e-mail";
+    }
+
+};
+
+email.h   :
+
+#include <iostream>
+#include <string>
+#include "cliente.h"
+#include "conta.h"
+using namespace std;
+
+class Email {
+private:
+    string msg;
+    string mailAddress;
+public:
+    Email() {
+        this->mailAddress = mailAddress;
+        this->msg = msg;
+    }
+
+    string getMailAddress() {
+        return this->mailAddress;
+    }
+
+    void setMailAddress(string mailAddress) {
+        this->mailAddress = mailAddress;
+    }
+
+    void sendEmail(string conta, string msg) {
+        cout << "Mandando e-mail para: " << conta.getCliente() << "Com a seguinte mensagem:" << msg << endl;
+    }
+};
+
 </p>
 </div>
 
