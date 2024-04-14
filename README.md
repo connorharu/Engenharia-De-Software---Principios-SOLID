@@ -1,8 +1,6 @@
 # Engenharia-De-Software---Principios-SOLID
 
-<div>
-<p>
-  Instruções da atividade:
+ ## Instruções da atividade:
 
   1. Escolham 4 dos 7 princípios abaixo
   
@@ -23,19 +21,19 @@
   D — Dependency Inversion Principle (Princípio da inversão da dependência)
   Prefira Composição a Herança
   Demeter 
-</p>
 
-<p>
+
   Os princípios escolhidos foram:
 - Single responsibility Principle;
 - Princípio de Demeter;
 - Inversão da dependência;
 - Prefira composição à Herança.
-</p>
 
-<p>
-  Para o primeiro princípio, escolhe-se o seguinte código para ilustrar o problema:
+  ## Single Responsibility Principle:
+  ### O que é?
+  O Princípio da Responsabilidade Única define que uma classe deve ter apenas uma responsabilidade, e todos os seus métodos devem se referir a essa responsabilidade.
 
+  ### Exemplo:
   class Turma() {
   private:
   //valores de Turma
@@ -58,7 +56,9 @@
 
   O método cancelaMatricula estar dentro da classe Turma não faz sentido. Isso fere o princípio da responsabilidade única, pois todos os métodos de Turma deveriam ser relacionados à turma, portanto, uma nova classe chamada Matricula poderia ser criada:
 
-turma.h   :
+### Utilizando o princípio:
+
+#### turma.h   :
 #include <iostream>
 #include <string>
 #include <stdlib.h>
@@ -84,7 +84,7 @@ public:
 
 };
 
-aluno.h   :
+#### aluno.h   :
 
 #include <stdlib.h>
 #include <iostream>
@@ -121,7 +121,7 @@ class Aluno {
    }
 };
 
-matricula.h   :
+#### matricula.h   :
 
 #include <stdlib.h>
 #include <iostream>
@@ -186,10 +186,10 @@ public:
 
 };
 
-</p>
+## Princípio de Demeter e Inversão de responsabilidade:
+### O que são?
 
-<p>
-  Para os princípios dois e três, escolhe-se o seguinte código para ilustrar o problema:
+  Para ilustrar, escolhe-se o seguinte código:
     void sendMail(ContaBancaria conta, String msg) {
       Cliente cliente = conta.getCliente();
       String endereco = cliente.getMailAddress();
@@ -199,9 +199,9 @@ public:
   Esse código fere o princípio de Demeter, do encapsulamento, pois ele utiliza de Cliente, uma classe cujo objeto não foi passado como parâmetro; uma das métricas necessárias para o bom encapsulamento de um código.
   Ele também fere o princípio de inversão de responsabilidade: módulos de alto nível não podem depender de outros de baixo nível, e que ambos devem depender somente de abstrações. Ele fere esse princípio pois o método sendEmail depende diretamente da implementação da classe Cliente pra conseguir o endereço de e-mail, ao invés de depender de uma abstração.
 
-O código arrumado seria:
+### Utilizando os princípios:
 
-cliente.h   :
+#### cliente.h   :
 #include <iostream>
 #include <string>
 #include <stdlib.h>
@@ -243,7 +243,7 @@ private:
     //outros métodos aqui;
 };
 
-conta.h   :
+#### conta.h   :
 
 #include <iostream>
 #include <string>
@@ -279,7 +279,7 @@ public:
 
 };
 
-email.h   :
+#### email.h   :
 
 #include <iostream>
 #include <string>
@@ -310,12 +310,12 @@ public:
     }
 };
 
-</p>
+## Preferir Composição à Herança:
+### O que é?
+  Normalmente, dadas duas soluções de projeto onde uma baseia-se em herança e a outra em composição, a solução por meio de composição geralmente é melhor.
+  Utilizaremos o seguinte código:
 
-<p>
-  O último princípio, preferir composição à herança, define que, normalmente, dadas duas soluções de projeto onde uma baseia-se em herança e a outra em composição, a solução por meio de composição geralmente é melhor. Utilizaremos o seguinte código:
-
-heranca.h   :
+#### heranca.h   :
 
 class Comida{
 private:
@@ -346,7 +346,7 @@ Heranca() {
 }
 };
 
-composicao.h   :
+#### composicao.h   :
 
 class Composicao {
 private:
@@ -363,131 +363,6 @@ public:
 };
 
 Dessa forma, nossa classe será composta somente dos métodos e atributos desejados, ao invés de herdar tudo que a classe Comida possui; por exemplo, nós não utilizamos de 'legume', 'grao' e 'proteina' na nossa classe Composicao por não julgarmos necessário, portanto ela não possui esses atributos, enquanto que a classe Heranca herdou todos esses atributos, mesmo eles sendo inúteis para o que desejamos fazer com a classe no momento.
-</p>
-</div>
-
-
-
-
-teste:
-
-# Engenharia de Software - Princípios SOLID
-
-## Descrição da Atividade:
-
-1. Escolha 4 dos 7 princípios abaixo:
-   
-2. Você deve commitar e documentar o código no seu repositório no GitHub. Utilize o Readme do projeto para linkar os códigos e documentar a explicação do exemplo.
-
-   - O que é? Para que serve?
-
-   - Exemplo que ilustre a sua importância (escolha a linguagem que desejar). Explique o código detalhadamente e onde o princípio está sendo usado e qual problema ele tem resolvido.
-
-3. Você deve enviar o link do seu repositório nesta Tarefa
-
-Você poderá escolher entre os 7 seguintes princípios (SOLID +2):
-
-- S — Single Responsibility Principle (Princípio da Responsabilidade Única)
-- O — Open-Closed Principle (Princípio Aberto-Fechado)
-- L — Liskov Substitution Principle (Princípio da Substituição de Liskov)
-- I — Interface Segregation Principle (Princípio da Segregação de Interfaces)
-- D — Dependency Inversion Principle (Princípio da Inversão de Dependência)
-- Prefira Composição à Herança
-- Demeter
-
-Os princípios escolhidos foram:
-
-- Single Responsibility Principle
-- Princípio de Demeter
-- Inversão da Dependência
-- Prefira Composição à Herança
-
-## Single Responsibility Principle:
-
-### O que é?
-O Princípio da Responsabilidade Única (SRP) afirma que uma classe deve ter apenas uma razão para mudar, ou seja, ela deve ter apenas uma responsabilidade.
-
-### Exemplo:
-```cpp
-// Turma.h
-#include <iostream>
-#include <string>
-#include <stdlib.h>
-
-using namespace std;
-
-class Turma {
-private:
-    string codTurma;
-    string semestre;
-
-public:
-    Turma(string semestre, int tamVetor);
-
-    ~Turma();
-
-    void mudarCodTurma(string codTurma);
-};
-
-// Aluno.h
-#include <stdlib.h>
-#include <iostream>
-#include <string>
-
-using namespace std;
-
-class Aluno {
-private:
-    string ra;
-    string nome;
-
-public:
-    Aluno();
-
-    Aluno(string _ra, string _nome);
-
-    string getRa();
-
-    void setRa(string ra);
-
-    void imprimir();
-};
-
-// Matricula.h
-#include <stdlib.h>
-#include <iostream>
-#include <string>
-#include "Aluno.h"
-#include "Turma.h"
-
-using namespace std;
-
-class Matricula {
-private:
-    int tamVetor;
-    int qtde;
-    Aluno** alunos;
-
-public:
-    Matricula();
-
-    bool matricula(Aluno* a);
-
-    int cancelaMatricula(string ra);
-
-    void imprimeMatriculados();
-
-    ~Matricula();
-};
-
-
-
-
-
-
-
-
-
 
 
 
