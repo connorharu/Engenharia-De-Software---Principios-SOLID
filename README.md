@@ -191,7 +191,7 @@ public:
 ## Princípio de Demeter e Inversão de responsabilidade:
 ### O que são?
 
-  Para ilustrar, escolhe-se o seguinte código:
+  Para ilustrar, escolhe-se o seguinte código, fornecido pelo professor:
   ```java
     void sendMail(ContaBancaria conta, String msg) {
       Cliente cliente = conta.getCliente();
